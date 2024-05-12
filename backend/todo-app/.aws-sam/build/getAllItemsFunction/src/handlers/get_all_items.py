@@ -1,18 +1,46 @@
 import json
-import os
 import boto3
+import os
+import logging
 
-client = boto3.client('dynamodb')
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+table_name = os.environ.get('TABLE_NAME')
+dynamodb_endpoint_url = os.environ.get('DYNAMODB_ENDPOINT_URL')
+
+dynamodb = boto3.resource('dynamodb', endpoint_url=dynamodb_endpoint_url)
+table = dynamodb.Table(table_name)
 
 def getAllItemsHandler(event, context):
-    if event["httpMethod"] != "GET":
-        raise Exception(f"getAllItems only accept GET method, you tried: {event.httpMethod}")
+    try:
+        logger.info("Starting function")
+        
+        response = table.scan(
+            FilterExpression="begins_with(PK, :pk_prefix) and begins_with(SK, :sk_prefix)",
+            ExpressionAttributeValues={
+                ':pk_prefix': 'USER#',
+                ':sk_prefix': 'USER#'
+            }
+        )
+        items = response['Items']
+        
+        return {
+            'statusCode': 200,
+            'body': json.dumps({'users': items})
+        }
+        
+    except Exception as e:
+        logger.error(f'Error retrieving data: {str(e)}')
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'message': 'Failed to fetch user data', 'error': str(e)})
+        }
 
-    data = client.scan(TableName=os.environ["SAMPLE_TABLE"])
-    items = data["Items"]
-    response = {
-        "statusCode": 200,
-        "body": json.dumps(items)
-    }
-
-    return response
+if __name__ == "__main__":
+    #ローカルテスト時のデフォルトイベントとコンテキスト
+    test_event = {}
+    test_context = {}
+    #関数の呼び出し
+    result = getAllItemsHandler(test_event, test_context)
+    print(result)

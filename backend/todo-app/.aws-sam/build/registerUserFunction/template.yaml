@@ -1,30 +1,33 @@
-# This is the SAM template that represents the architecture of your serverless application
-# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-template-basics.html
 
-# The AWSTemplateFormatVersion identifies the capabilities of the template
-# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/format-version-structure.html
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   todo-app
 
-# Transform section specifies one or more macros that AWS CloudFormation uses to process your template
-# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-section-structure.html
 Transform:
   - AWS::Serverless-2016-10-31
 
-# Resources declares the AWS resources that you want to include in the stack
-# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
+Globals:
+  Function:
+    Runtime: python3.12
+    Environment:
+      Variables:
+        TABLE_NAME: !Ref Todos
+        DYNAMODB_ENDPOINT_URL: "http://host.docker.internal:8000"
+    Timeout: 10
+    MemorySize: 128
+
+
 Resources:
   registerUserFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/handlers/register_user.lambda_handler
-      Runtime: python3.12
-      MemorySize: 128
-      Timeout: 10
       Environment: 
         Variables:
           TABLE_NAME: !Ref Todos 
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Todos
       Events:
         RegisterUserApi:
           Type: Api
@@ -33,36 +36,35 @@ Resources:
             Method: POST
 
 
+  # getAllItemsFunctionToTableConnector:
+  #   Type: AWS::Serverless::Connector # More info about Connector Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-connector.html
+  #   Properties:
+  #     Source:
+  #       Id: getAllItemsFunction
+  #     Destination:
+  #       Id: Todos
+  #     Permissions:
+  #       - Read
 
-  getAllItemsFunctionToTableConnector:
-    Type: AWS::Serverless::Connector # More info about Connector Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-connector.html
-    Properties:
-      Source:
-        Id: getAllItemsFunction
-      Destination:
-        Id: Todos
-      Permissions:
-        - Read
+  # getByIdFunctionToTableConnector:
+  #   Type: AWS::Serverless::Connector
+  #   Properties:
+  #     Source:
+  #       Id: getByIdFunction
+  #     Destination:
+  #       Id: Todos
+  #     Permissions:
+  #       - Read
 
-  getByIdFunctionToTableConnector:
-    Type: AWS::Serverless::Connector
-    Properties:
-      Source:
-        Id: getByIdFunction
-      Destination:
-        Id: Todos
-      Permissions:
-        - Read
-
-  putItemFunctionToTableConnector:
-    Type: AWS::Serverless::Connector
-    Properties:
-      Source:
-        Id: putItemFunction
-      Destination:
-        Id: Todos
-      Permissions:
-        - Write
+  # putItemFunctionToTableConnector:
+  #   Type: AWS::Serverless::Connector
+  #   Properties:
+  #     Source:
+  #       Id: RegisterTodoFunction
+  #     Destination:
+  #       Id: Todos
+  #     Permissions:
+  #       - Write
 
   # Each Lambda function is defined by properties:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -72,63 +74,57 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/handlers/get_all_items.getAllItemsHandler
-      Runtime: python3.12
-      MemorySize: 128
-      Timeout: 100
       Description: A simple example includes a HTTP get method to get all items from a DynamoDB table.
       Environment:
         Variables:
-          # Make table name accessible as environment variable from function code during execution
           TABLE_NAME: !Ref Todos
+      Policies: 
+        - DynamoDBReadPolicy:
+            TableName: !Ref Todos
       Events:
         Api:
           Type: Api
           Properties:
             Path: /
             Method: GET
-  # Each Lambda function is defined by properties:
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
-  # This is a Lambda function config associated with the source code: get-by-id.js
-  getByIdFunction:
+
+  loginFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/get_by_id.getByIdHandler
-      Runtime: python3.12
-      MemorySize: 128
-      Timeout: 100
-      Description: A simple example includes a HTTP get method to get one item by id from a DynamoDB table.
-      Environment:
-        Variables:
-          # Make table name accessible as environment variable from function code during execution
-          TABLE_NAME: !Ref Todos
+      Handler: src/handlers/login.loginHandler
+      Description: A simple example includes a HTTP post method to get one item by email and password from a DynamoDB table.
+      Policies: 
+        - DynamoDBReadPolicy:
+            TableName: !Ref Todos
+      # Environment:
+      #   Variables:
+      #     TABLE_NAME: !Ref Todos
       Events:
         Api:
           Type: Api
           Properties:
-            Path: /{id}
-            Method: GET
+            Path: /login
+            Method: POST
   # Each Lambda function is defined by properties:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
   # This is a Lambda function config associated with the source code: put-item.js
-  putItemFunction:
+  RegisterTodoFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/put_item.putItemHandler
-      Runtime: python3.12
-      MemorySize: 128
-      Timeout: 100
-      Description: A simple example includes a HTTP post method to add one item to a DynamoDB table.
-      Environment:
-        Variables:
-          # Make table name accessible as environment variable from function code during execution
-          TABLE_NAME: !Ref Todos
+      Handler: src/handlers/register_todo.register_todo_handler
+      Policies: 
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Todos
+      # Environment:
+      #   Variables:
+      #     TABLE_NAME: !Ref Todos
       Events:
         Api:
           Type: Api
           Properties:
-            Path: /
+            Path: /todo/register
             Method: POST
   # Simple syntax to create a DynamoDB table with a single attribute primary key, more in
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlesssimpletable
@@ -143,11 +139,24 @@ Resources:
           AttributeType: S
         - AttributeName: SK
           AttributeType: S
+        - AttributeName: Email  # GSIのための属性定義
+          AttributeType: S
       KeySchema:
         - AttributeName: PK
           KeyType: HASH  # パーティションキー
         - AttributeName: SK
           KeyType: RANGE # ソートキー
+      GlobalSecondaryIndexes:
+        - IndexName: EmailIndex
+          KeySchema:
+            - AttributeName: Email
+              KeyType: HASH
+          Projection: 
+            ProjectionType: ALL 
+          ProvisionedThroughput:
+            ReadCapacityUnits: 2
+            WriteCapacityUnits: 2
+            
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
