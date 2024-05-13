@@ -9,7 +9,12 @@ logger.setLevel(logging.INFO)
 table_name = os.environ.get('TABLE_NAME')
 dynamodb_endpoint_url = os.environ.get('DYNAMODB_ENDPOINT_URL')
 
-dynamodb = boto3.resource('dynamodb', endpoint_url=dynamodb_endpoint_url)
+# DynamoDBリソースの初期化
+if dynamodb_endpoint_url:
+    dynamodb = boto3.resource('dynamodb', endpoint_url=dynamodb_endpoint_url)
+else:
+    dynamodb = boto3.resource('dynamodb')
+
 table = dynamodb.Table(table_name)
 
 def getAllItemsHandler(event, context):

@@ -18,118 +18,6 @@ Globals:
 
 
 Resources:
-  registerUserFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/handlers/register_user.lambda_handler
-      Environment: 
-        Variables:
-          TABLE_NAME: !Ref Todos 
-      Policies:
-        - DynamoDBCrudPolicy:
-            TableName: !Ref Todos
-      Events:
-        RegisterUserApi:
-          Type: Api
-          Properties:
-            Path: /users/register
-            Method: POST
-
-
-  # getAllItemsFunctionToTableConnector:
-  #   Type: AWS::Serverless::Connector # More info about Connector Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-connector.html
-  #   Properties:
-  #     Source:
-  #       Id: getAllItemsFunction
-  #     Destination:
-  #       Id: Todos
-  #     Permissions:
-  #       - Read
-
-  # getByIdFunctionToTableConnector:
-  #   Type: AWS::Serverless::Connector
-  #   Properties:
-  #     Source:
-  #       Id: getByIdFunction
-  #     Destination:
-  #       Id: Todos
-  #     Permissions:
-  #       - Read
-
-  # putItemFunctionToTableConnector:
-  #   Type: AWS::Serverless::Connector
-  #   Properties:
-  #     Source:
-  #       Id: RegisterTodoFunction
-  #     Destination:
-  #       Id: Todos
-  #     Permissions:
-  #       - Write
-
-  # Each Lambda function is defined by properties:
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-
-  # This is a Lambda function config associated with the source code: get-all-items.js
-  getAllItemsFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/handlers/get_all_items.getAllItemsHandler
-      Description: A simple example includes a HTTP get method to get all items from a DynamoDB table.
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref Todos
-      Policies: 
-        - DynamoDBReadPolicy:
-            TableName: !Ref Todos
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /
-            Method: GET
-
-
-  loginFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/handlers/login.loginHandler
-      Description: A simple example includes a HTTP post method to get one item by email and password from a DynamoDB table.
-      Policies: 
-        - DynamoDBReadPolicy:
-            TableName: !Ref Todos
-      # Environment:
-      #   Variables:
-      #     TABLE_NAME: !Ref Todos
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /login
-            Method: POST
-  # Each Lambda function is defined by properties:
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-
-  # This is a Lambda function config associated with the source code: put-item.js
-  RegisterTodoFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: src/handlers/register_todo.register_todo_handler
-      Policies: 
-        - DynamoDBCrudPolicy:
-            TableName: !Ref Todos
-      # Environment:
-      #   Variables:
-      #     TABLE_NAME: !Ref Todos
-      Events:
-        Api:
-          Type: Api
-          Properties:
-            Path: /todo/register
-            Method: POST
-  # Simple syntax to create a DynamoDB table with a single attribute primary key, more in
-  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlesssimpletable
-
-  # DynamoDB table to store item: {id: &lt;ID&gt;, name: &lt;NAME&gt;}
   Todos:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -160,6 +48,90 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
+
+
+
+  registerUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/register_user.lambda_handler
+      Environment: 
+        Variables:
+          TABLE_NAME: !Ref Todos 
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Todos
+      Events:
+        RegisterUserApi:
+          Type: Api
+          Properties:
+            Path: /users/register
+            Method: POST
+
+
+  getAllItemsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get_all_items.getAllItemsHandler
+      Description: A simple example includes a HTTP get method to get all items from a DynamoDB table.
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Todos
+      Policies: 
+        - DynamoDBReadPolicy:
+            TableName: !Ref Todos
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /
+            Method: GET
+
+
+  loginFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/login.loginHandler
+      Description: A simple example includes a HTTP post method to get one item by email and password from a DynamoDB table.
+      Policies: 
+        - DynamoDBReadPolicy:
+            TableName: !Ref Todos
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /login
+            Method: POST
+
+
+  RegisterTodoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/register_todo.register_todo_handler
+      Policies: 
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Todos
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /todo/register
+            Method: POST
+
+  getUserProfileFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get_user_profile.get_user_handler
+      Policies: 
+        - DynamoDBReadPolicy:
+            TableName: !Ref Todos
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /users/profile
+            Method: GET
+
 
 Outputs:
   WebEndpoint:

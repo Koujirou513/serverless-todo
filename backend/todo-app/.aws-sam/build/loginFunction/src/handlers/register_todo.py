@@ -8,7 +8,11 @@ table_name = os.environ.get('TABLE_NAME')
 dynamodb_endpoint_url = os.environ.get('DYNAMODB_ENDPOINT_URL')
 
 # DynamoDBリソースの初期化
-dynamodb = boto3.resource('dynamodb', endpoint_url=dynamodb_endpoint_url)
+if dynamodb_endpoint_url:
+    dynamodb = boto3.resource('dynamodb', endpoint_url=dynamodb_endpoint_url)
+else:
+    dynamodb = boto3.resource('dynamodb')
+
 table = dynamodb.Table(table_name)
 
 def register_todo_handler(event, context):

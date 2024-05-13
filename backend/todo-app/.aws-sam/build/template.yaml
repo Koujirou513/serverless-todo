@@ -13,6 +13,35 @@ Globals:
     Timeout: 10
     MemorySize: 128
 Resources:
+  Todos:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Todos
+      AttributeDefinitions:
+      - AttributeName: PK
+        AttributeType: S
+      - AttributeName: SK
+        AttributeType: S
+      - AttributeName: Email
+        AttributeType: S
+      KeySchema:
+      - AttributeName: PK
+        KeyType: HASH
+      - AttributeName: SK
+        KeyType: RANGE
+      GlobalSecondaryIndexes:
+      - IndexName: EmailIndex
+        KeySchema:
+        - AttributeName: Email
+          KeyType: HASH
+        Projection:
+          ProjectionType: ALL
+        ProvisionedThroughput:
+          ReadCapacityUnits: 2
+          WriteCapacityUnits: 2
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
   registerUserFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -93,35 +122,23 @@ Resources:
       CodeUri: RegisterTodoFunction
     Metadata:
       SamResourceId: RegisterTodoFunction
-  Todos:
-    Type: AWS::DynamoDB::Table
+  getUserProfileFunction:
+    Type: AWS::Serverless::Function
     Properties:
-      TableName: Todos
-      AttributeDefinitions:
-      - AttributeName: PK
-        AttributeType: S
-      - AttributeName: SK
-        AttributeType: S
-      - AttributeName: Email
-        AttributeType: S
-      KeySchema:
-      - AttributeName: PK
-        KeyType: HASH
-      - AttributeName: SK
-        KeyType: RANGE
-      GlobalSecondaryIndexes:
-      - IndexName: EmailIndex
-        KeySchema:
-        - AttributeName: Email
-          KeyType: HASH
-        Projection:
-          ProjectionType: ALL
-        ProvisionedThroughput:
-          ReadCapacityUnits: 2
-          WriteCapacityUnits: 2
-      ProvisionedThroughput:
-        ReadCapacityUnits: 2
-        WriteCapacityUnits: 2
+      Handler: src/handlers/get_user_profile.get_user_handler
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: Todos
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /users/profile
+            Method: GET
+      CodeUri: getUserProfileFunction
+    Metadata:
+      SamResourceId: getUserProfileFunction
 Outputs:
   WebEndpoint:
     Description: API Gateway endpoint URL for Prod stage
