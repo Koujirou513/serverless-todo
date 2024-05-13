@@ -58,15 +58,15 @@ Resources:
         RegisterUserApi:
           Type: Api
           Properties:
-            Path: /users/register
+            Path: /user/register
             Method: POST
       CodeUri: registerUserFunction
     Metadata:
       SamResourceId: registerUserFunction
-  getAllItemsFunction:
+  getUserInfoFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/get_all_items.getAllItemsHandler
+      Handler: src/handlers/get_user_info.get_user_info_handler
       Description: A simple example includes a HTTP get method to get all items from
         a DynamoDB table.
       Environment:
@@ -81,11 +81,11 @@ Resources:
         Api:
           Type: Api
           Properties:
-            Path: /
+            Path: /user/info
             Method: GET
-      CodeUri: getAllItemsFunction
+      CodeUri: getUserInfoFunction
     Metadata:
-      SamResourceId: getAllItemsFunction
+      SamResourceId: getUserInfoFunction
   loginFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -134,7 +134,7 @@ Resources:
         Api:
           Type: Api
           Properties:
-            Path: /users/profile
+            Path: /user/profile
             Method: GET
       CodeUri: getUserProfileFunction
     Metadata:
