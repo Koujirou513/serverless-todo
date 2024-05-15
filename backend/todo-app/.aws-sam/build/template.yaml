@@ -139,6 +139,27 @@ Resources:
       CodeUri: getUserProfileFunction
     Metadata:
       SamResourceId: getUserProfileFunction
+  updateUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/update_user.update_user_handler
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: Todos
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Todos
+      Events:
+        UpdateUserApi:
+          Type: Api
+          Properties:
+            Path: /user/update
+            Method: PATCH
+      CodeUri: updateUserFunction
+    Metadata:
+      SamResourceId: updateUserFunction
 Outputs:
   WebEndpoint:
     Description: API Gateway endpoint URL for Prod stage
