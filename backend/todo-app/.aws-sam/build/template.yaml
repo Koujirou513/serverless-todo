@@ -160,6 +160,27 @@ Resources:
       CodeUri: updateUserFunction
     Metadata:
       SamResourceId: updateUserFunction
+  deleteUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/delete_user.delete_user_handler
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: Todos
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Todos
+      Events:
+        DeleteUserApi:
+          Type: Api
+          Properties:
+            Path: /user/delete
+            Method: DELETE
+      CodeUri: deleteUserFunction
+    Metadata:
+      SamResourceId: deleteUserFunction
 Outputs:
   WebEndpoint:
     Description: API Gateway endpoint URL for Prod stage

@@ -149,6 +149,23 @@ Resources:
             Path: /user/update
             Method: PATCH
 
+  deleteUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/delete_user.delete_user_handler
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Todos
+      Policies: 
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Todos
+      Events:
+        DeleteUserApi:
+          Type: Api
+          Properties:
+            Path: /user/delete
+            Method: DELETE
+
 
 Outputs:
   WebEndpoint:
