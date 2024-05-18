@@ -72,8 +72,8 @@ def get_user_info_handler(event, context):
         
         response = table.get_item(
             Key={
-                'PK': f'USER#{user_id}',
-                'SK': f'USER#{user_id}'
+                'PK': user_id,
+                'SK': user_id
             }
         )
         user = response.get('Item', {})
@@ -100,7 +100,7 @@ def get_user_info_handler(event, context):
         response = table.query(
             KeyConditionExpression="PK = :pk and begins_with(SK, :sk_prefix)",
             ExpressionAttributeValues={
-                ':pk': f'USER#{user_id}',
+                ':pk': user_id,
                 ':sk_prefix': 'TODO#'
             }
         )
@@ -113,7 +113,7 @@ def get_user_info_handler(event, context):
             tasks_response = table.query(
                 KeyConditionExpression="PK = :pk and begins_with(SK, :sk_prefix)",
                 ExpressionAttributeValues={
-                    ':pk': f'USER#{user_id}',
+                    ':pk': user_id,
                     ':sk_prefix': f'{todo_id}#TASK#'
                 }
             )

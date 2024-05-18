@@ -57,7 +57,7 @@ def loginHandler(event, context):
             }
         
         #ユーザーIDを返す
-        user_id = item['PK'].split('#')[1] # 'USER#<user_id>'からuser_idを抽出
+        user_id = item['PK']
         
         return {
             'statusCode': 200,

@@ -28,8 +28,8 @@ def delete_user_handler(event, context):
         
         response = table.delete_item(
             Key={
-                'PK': f'USER#{user_id}',
-                'SK': f'USER#{user_id}'
+                'PK': user_id,
+                'SK': user_id
             }
         )
         return {

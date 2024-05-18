@@ -30,8 +30,8 @@ def update_user_handler(event, context):
         
         response = table.update_item(
             Key={
-                'PK': f'USER#{user_id}',
-                'SK': f'USER#{user_id}'
+                'PK': user_id,
+                'SK': user_id
             },
             UpdateExpression="set #name = :new_name",
             ExpressionAttributeNames={

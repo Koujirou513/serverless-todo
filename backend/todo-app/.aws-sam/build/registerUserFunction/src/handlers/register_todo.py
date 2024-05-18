@@ -30,7 +30,7 @@ def register_todo_handler(event, context):
         # Todoアイテムの生成
         todo_id = str(uuid.uuid4())
         todo_item = {
-            'PK': f'USER#{user_id}',
+            'PK': user_id,
             'SK': f'TODO#{todo_id}',
             'Title': title,
             'TargetDate': target_date,
