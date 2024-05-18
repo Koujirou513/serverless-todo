@@ -57,6 +57,7 @@ def calculate_todo_progress(todo, tasks):
     remaining_days = (target_date - datetime.now()).days
     
     return {
+        'Id': todo['SK'], 
         'Title': todo['Title'],
         'RemainingDays': remaining_days,
         'Progress': progress_percentage
@@ -107,12 +108,13 @@ def get_user_info_handler(event, context):
         
         todo_infos = [] 
         for todo in todos:
+            todo_id = todo['SK']
             # 各ToDoのタスク情報を取得
             tasks_response = table.query(
                 KeyConditionExpression="PK = :pk and begins_with(SK, :sk_prefix)",
                 ExpressionAttributeValues={
-                    ':pk': todo['PK'],
-                    ':sk_prefix': f'{todo["SK"]}#TASK#'
+                    ':pk': f'USER#{user_id}',
+                    ':sk_prefix': f'{todo_id}#TASK#'
                 }
             )
             tasks = tasks_response.get('Items', [])
