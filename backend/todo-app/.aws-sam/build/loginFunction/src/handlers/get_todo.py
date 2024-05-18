@@ -1,6 +1,7 @@
 import json
 import os 
 import boto3
+from decimal import Decimal
 
 # 環境変数から情報を取得
 table_name = os.environ.get('TABLE_NAME')
@@ -14,12 +15,19 @@ else:
 
 table = dynamodb.Table(table_name)
 
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return int(obj)
+        return super(DecimalEncoder).default(obj)
+
 def get_todo_handler(event, context):
     try:
         # クエリパラメータからユーザーIDを取得
         user_id = event['queryStringParameters']['userId']
+        todo_id = event['queryStringParameters']['todoId']
         
-        # DynamoDBからユーザー情報を取得
+        # DynamoDBから特定のToDo情報を取得
         response = table.get_item(
             TableName=table_name,
             Key={
@@ -28,20 +36,33 @@ def get_todo_handler(event, context):
             }
         )
         
-        item = response.get('Item', {})
+        todo = response.get('Item', {})
         
-        if not item:
+        if not todo:
             return {
                 'statusCode': 404,
                 'body': json.dumps({'message': 'User not found'})
             }
+        # ToDoに紐づく全てのタスクを取得
+        tasks_response = table.query(
+            KeyConditionExpression="PK = :pk and begins_with(SK, :sk_prefix)",
+            ExpressionAttributeValues={
+                ':pk': f'USER#{user_id}',
+                ':sk_prefix': f'TODO#{todo_id}#TASK#'
+            }
+        )
+        tasks = tasks_response.get('Items', [])
+        
+        # レスポンスの生成
+        result = {
+            'todo': todo,
+            'tasks': tasks
+        }
             
-        # パスワードをレスポンスから削除
-        item.pop('Password', None)
         
         return {
             'statusCode': 200,
-            'body': json.dumps({'user': item})
+            'body': json.dumps(result, cls=DecimalEncoder)
         }
         
     except Exception as e:

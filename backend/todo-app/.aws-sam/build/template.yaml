@@ -181,6 +181,27 @@ Resources:
       CodeUri: deleteUserFunction
     Metadata:
       SamResourceId: deleteUserFunction
+  getTodoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/get_todo.get_todo_handler
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: Todos
+      Policies:
+      - DynamoDBReadPolicy:
+          TableName:
+            Ref: Todos
+      Events:
+        GetTodoApi:
+          Type: Api
+          Properties:
+            Path: /todo
+            Method: GET
+      CodeUri: getTodoFunction
+    Metadata:
+      SamResourceId: getTodoFunction
 Outputs:
   WebEndpoint:
     Description: API Gateway endpoint URL for Prod stage

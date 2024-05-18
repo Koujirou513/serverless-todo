@@ -1,0 +1,7 @@
+{
+    "httpMethod": "GET",
+    "queryStringParameters": {
+        "userId": "9c393d44-0789-4df0-b779-b7d5d82a8ec0",
+        "todoId": "cd0aeb59-b3d7-4592-a7e5-ad1ee62bf9d3"
+    }
+}
