@@ -32,7 +32,7 @@ def get_todo_handler(event, context):
             TableName=table_name,
             Key={
                 'PK': f'USER#{user_id}',
-                'SK': f'TODO#{todo_id}'
+                'SK': todo_id
             }
         )
         
@@ -48,7 +48,7 @@ def get_todo_handler(event, context):
             KeyConditionExpression="PK = :pk and begins_with(SK, :sk_prefix)",
             ExpressionAttributeValues={
                 ':pk': f'USER#{user_id}',
-                ':sk_prefix': f'TODO#{todo_id}#TASK#'
+                ':sk_prefix': f'{todo_id}#TASK#'
             }
         )
         tasks = tasks_response.get('Items', [])
