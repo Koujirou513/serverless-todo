@@ -47,6 +47,20 @@ class DecimalEncoder(json.JSONEncoder):
         if isinstance(obj, Decimal):
             return int(obj)
         return super(DecimalEncoder, self).default(obj)
+    
+def calculate_todo_progress(todo, tasks):
+    total_tasks = len(tasks)
+    completed_tasks = sum(task['Completed'] for task in tasks)
+    
+    progress_percentage = (completed_tasks/ total_tasks * 100) if total_tasks > 0 else 0
+    target_date = datetime.strptime(todo['TargetDate'], '%Y-%m-%d')
+    remaining_days = (target_date - datetime.now()).days
+    
+    return {
+        'Title': todo['Title'],
+        'RemainingDays': remaining_days,
+        'Progress': progress_percentage
+    }
 
 
 def get_user_info_handler(event, context):
@@ -91,6 +105,22 @@ def get_user_info_handler(event, context):
         )
         todos = response.get('Items', [])
         
+        todo_infos = [] 
+        for todo in todos:
+            # 各ToDoのタスク情報を取得
+            tasks_response = table.query(
+                KeyConditionExpression="PK = :pk and begins_with(SK, :sk_prefix)",
+                ExpressionAttributeValues={
+                    ':pk': todo['PK'],
+                    ':sk_prefix': f'{todo["SK"]}#TASK#'
+                }
+            )
+            tasks = tasks_response.get('Items', [])
+            
+            #ToDoごとの進捗と残り日数を計算
+            todo_info = calculate_todo_progress(todo, tasks)
+            todo_infos.append(todo_info)
+        
         result = {
             'user': {
                 'RemainingLife': {
@@ -98,7 +128,7 @@ def get_user_info_handler(event, context):
                     'Days': remaining_days
                 }
             },
-            'todos': todos
+            'todos': todo_infos
         }
         
         return {

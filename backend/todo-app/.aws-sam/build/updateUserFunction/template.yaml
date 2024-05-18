@@ -104,7 +104,7 @@ Resources:
             Method: POST
 
 
-  RegisterTodoFunction:
+  registerTodoFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/handlers/register_todo.register_todo_handler

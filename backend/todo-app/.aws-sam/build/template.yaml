@@ -105,7 +105,7 @@ Resources:
       CodeUri: loginFunction
     Metadata:
       SamResourceId: loginFunction
-  RegisterTodoFunction:
+  registerTodoFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/handlers/register_todo.register_todo_handler
@@ -119,9 +119,9 @@ Resources:
           Properties:
             Path: /todo/register
             Method: POST
-      CodeUri: RegisterTodoFunction
+      CodeUri: registerTodoFunction
     Metadata:
-      SamResourceId: RegisterTodoFunction
+      SamResourceId: registerTodoFunction
   getUserProfileFunction:
     Type: AWS::Serverless::Function
     Properties:

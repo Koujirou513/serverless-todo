@@ -1,4 +1,4 @@
 {
     "httpMethod": "POST",
-    "body": "{\"userId\": \"27ae158d-a785-41ff-8eca-0b8f59219e0e\", \"title\": \"Learn DynamoDB\", \"targetDate\": \"2024-01-01\", \"budget\": 100, \"completed\": false, \"tasks\": [{\"title\": \"Read Documentation\", \"targetDate\": \"2023-12-01\", \"completed\": false}, {\"title\": \"Setup Environment\", \"targetDate\": \"2023-12-05\", \"completed\": false}]}"
+    "body": "{\"userId\": \"9c393d44-0789-4df0-b779-b7d5d82a8ec0\", \"title\": \"Learn DynamoDB\", \"targetDate\": \"2024-01-01\", \"budget\": 100, \"completed\": false, \"tasks\": [{\"title\": \"Read Documentation\", \"targetDate\": \"2023-12-01\", \"completed\": false}, {\"title\": \"Setup Environment\", \"targetDate\": \"2023-12-05\", \"completed\": false}]}"
 }
