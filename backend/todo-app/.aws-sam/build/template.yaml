@@ -202,6 +202,27 @@ Resources:
       CodeUri: getTodoFunction
     Metadata:
       SamResourceId: getTodoFunction
+  updateTodoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/update_todo.update_todo_handler
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: Todos
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Todos
+      Events:
+        UpdateTodoApi:
+          Type: Api
+          Properties:
+            Path: /todo/update
+            Method: PUT
+      CodeUri: updateTodoFunction
+    Metadata:
+      SamResourceId: updateTodoFunction
 Outputs:
   WebEndpoint:
     Description: API Gateway endpoint URL for Prod stage

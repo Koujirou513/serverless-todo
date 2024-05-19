@@ -7,6 +7,6 @@ architecture = "x86_64"
 handler = "src/handlers/registerUser.lambda_handler"
 manifest_hash = ""
 packagetype = "Zip"
-functions = ["registerUserFunction", "getUserInfoFunction", "loginFunction", "registerTodoFunction", "getUserProfileFunction", "updateUserFunction", "deleteUserFunction", "getTodoFunction"]
+functions = ["registerUserFunction", "getUserInfoFunction", "loginFunction", "registerTodoFunction", "getUserProfileFunction", "updateUserFunction", "deleteUserFunction", "getTodoFunction", "updateTodoFunction"]
 
 [layer_build_definitions]
