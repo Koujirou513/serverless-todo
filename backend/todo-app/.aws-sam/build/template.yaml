@@ -244,6 +244,48 @@ Resources:
       CodeUri: taskCompletedFunction
     Metadata:
       SamResourceId: taskCompletedFunction
+  deleteTodoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/delete_todo.delete_todo_handler
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: Todos
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Todos
+      Events:
+        DeleteTodoApi:
+          Type: Api
+          Properties:
+            Path: /todo/delete
+            Method: DELETE
+      CodeUri: deleteTodoFunction
+    Metadata:
+      SamResourceId: deleteTodoFunction
+  deleteTaskFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/delete_task.delete_task_handler
+      Environment:
+        Variables:
+          TABLE_NAME:
+            Ref: Todos
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: Todos
+      Events:
+        DeleteTaskApi:
+          Type: Api
+          Properties:
+            Path: /todo/task/delete
+            Method: DELETE
+      CodeUri: deleteTaskFunction
+    Metadata:
+      SamResourceId: deleteTaskFunction
 Outputs:
   WebEndpoint:
     Description: API Gateway endpoint URL for Prod stage

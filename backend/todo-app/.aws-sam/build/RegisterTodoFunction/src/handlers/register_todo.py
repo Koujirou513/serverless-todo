@@ -45,7 +45,7 @@ def register_todo_handler(event, context):
         for task in tasks:
             task_id = str(uuid.uuid4())
             task_item = {
-                'PK': f'USER#{user_id}',
+                'PK': user_id,
                 'SK': f'TODO#{todo_id}#TASK#{task_id}',
                 'Title': task['title'],
                 'TargetDate': task['targetDate'],

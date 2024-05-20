@@ -1,0 +1,3 @@
+{
+    "body": "{\"name\": \"test Doe\", \"email\": \"test.doe@example.com\", \"password\": \"myPassword\", \"birthdate\": \"1987-03-23\", \"gender\": \"male\"}" 
+}
