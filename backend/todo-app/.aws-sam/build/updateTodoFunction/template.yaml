@@ -200,6 +200,24 @@ Resources:
             Path: /todo/update
             Method: PUT 
 
+  taskCompletedFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/task_completed.task_completed_handler
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Todos 
+      Policies: 
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Todos 
+      Events:
+        TaskCompletedApi:
+          Type: Api
+          Properties:
+            Path: /todo/task/completed
+            Method: PATCH
+
+
 
 Outputs:
   WebEndpoint:
