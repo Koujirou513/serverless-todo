@@ -1,4 +1,4 @@
 {
     "httpMethod": "DELETE",
-    "body": "{\"userId\": \"USER#9c393d44-0789-4df0-b779-b7d5d82a8ec0\", \"taskId\": \"TODO#9d6c8b07-8b6a-4e35-9a20-6c6975bc8195#TASK#c83051fe-6269-4ff5-9b7b-fcd521c7d513\"}"
+    "body": "{\"userId\": \"USER#9c393d44-0789-4df0-b779-b7d5d82a8ec0\", \"taskId\": \"TODO#7b208501-4077-4e76-bf71-5d9dd8998b1f#TASK#e6185a65-aadb-42df-958a-cea35267874c\"}"
 }

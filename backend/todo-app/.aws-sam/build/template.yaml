@@ -13,6 +13,14 @@ Globals:
     Timeout: 10
     MemorySize: 128
 Resources:
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowOrigins: '''*'''
+        AllowHeaders: '''Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token'''
+        AllowMethods: '''GET, POST, PUT, DELETE, OPTIONS, PATCH'''
   Todos:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -58,6 +66,8 @@ Resources:
         RegisterUserApi:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: MyApi
             Path: /user/register
             Method: POST
       CodeUri: registerUserFunction
@@ -81,6 +91,8 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: MyApi
             Path: /user/info
             Method: GET
       CodeUri: getUserInfoFunction
@@ -100,6 +112,8 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: MyApi
             Path: /login
             Method: POST
       CodeUri: loginFunction
@@ -117,6 +131,8 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: MyApi
             Path: /todo/register
             Method: POST
       CodeUri: registerTodoFunction
@@ -134,6 +150,8 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: MyApi
             Path: /user/profile
             Method: GET
       CodeUri: getUserProfileFunction
@@ -155,6 +173,8 @@ Resources:
         UpdateUserApi:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: MyApi
             Path: /user/update
             Method: PATCH
       CodeUri: updateUserFunction
@@ -176,6 +196,8 @@ Resources:
         DeleteUserApi:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: MyApi
             Path: /user/delete
             Method: DELETE
       CodeUri: deleteUserFunction
@@ -197,6 +219,8 @@ Resources:
         GetTodoApi:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: MyApi
             Path: /todo
             Method: GET
       CodeUri: getTodoFunction
@@ -218,6 +242,8 @@ Resources:
         UpdateTodoApi:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: MyApi
             Path: /todo/update
             Method: PUT
       CodeUri: updateTodoFunction
@@ -239,6 +265,8 @@ Resources:
         TaskCompletedApi:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: MyApi
             Path: /todo/task/completed
             Method: PATCH
       CodeUri: taskCompletedFunction
@@ -260,6 +288,8 @@ Resources:
         DeleteTodoApi:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: MyApi
             Path: /todo/delete
             Method: DELETE
       CodeUri: deleteTodoFunction
@@ -281,6 +311,8 @@ Resources:
         DeleteTaskApi:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: MyApi
             Path: /todo/task/delete
             Method: DELETE
       CodeUri: deleteTaskFunction

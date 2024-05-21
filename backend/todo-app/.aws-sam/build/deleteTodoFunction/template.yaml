@@ -18,6 +18,15 @@ Globals:
 
 
 Resources:
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod 
+      Cors:
+        AllowOrigins: "'*'"
+        AllowHeaders: "'Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token'"
+        AllowMethods: "'GET, POST, PUT, DELETE, OPTIONS, PATCH'"
+
   Todos:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -65,6 +74,7 @@ Resources:
         RegisterUserApi:
           Type: Api
           Properties:
+            RestApiId: !Ref MyApi
             Path: /user/register
             Method: POST
 
@@ -84,6 +94,7 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId: !Ref MyApi
             Path: /user/info
             Method: GET
 
@@ -100,6 +111,7 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId: !Ref MyApi
             Path: /login
             Method: POST
 
@@ -115,6 +127,7 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId: !Ref MyApi
             Path: /todo/register
             Method: POST
 
@@ -129,6 +142,7 @@ Resources:
         Api:
           Type: Api
           Properties:
+            RestApiId: !Ref MyApi
             Path: /user/profile
             Method: GET
 
@@ -146,6 +160,7 @@ Resources:
         UpdateUserApi:
           Type: Api
           Properties:
+            RestApiId: !Ref MyApi
             Path: /user/update
             Method: PATCH
 
@@ -163,6 +178,7 @@ Resources:
         DeleteUserApi:
           Type: Api
           Properties:
+            RestApiId: !Ref MyApi
             Path: /user/delete
             Method: DELETE
 
@@ -180,6 +196,7 @@ Resources:
         GetTodoApi:
           Type: Api
           Properties:
+            RestApiId: !Ref MyApi
             Path: /todo
             Method: GET
 
@@ -197,6 +214,7 @@ Resources:
         UpdateTodoApi:
           Type: Api
           Properties:
+            RestApiId: !Ref MyApi
             Path: /todo/update
             Method: PUT 
 
@@ -214,6 +232,7 @@ Resources:
         TaskCompletedApi:
           Type: Api
           Properties:
+            RestApiId: !Ref MyApi
             Path: /todo/task/completed
             Method: PATCH
 
@@ -231,6 +250,7 @@ Resources:
         DeleteTodoApi:
           Type: Api
           Properties:
+            RestApiId: !Ref MyApi
             Path: /todo/delete
             Method: DELETE
 
@@ -248,6 +268,7 @@ Resources:
         DeleteTaskApi:
           Type: Api
           Properties:
+            RestApiId: !Ref MyApi
             Path: /todo/task/delete
             Method: DELETE
 
