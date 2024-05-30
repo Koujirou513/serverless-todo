@@ -1,0 +1,4 @@
+{
+    "httpMethod": "DELETE",
+    "body": "{\"userId\": \"USER#9c393d44-0789-4df0-b779-b7d5d82a8ec0\", \"taskId\": \"TODO#7b208501-4077-4e76-bf71-5d9dd8998b1f#TASK#e6185a65-aadb-42df-958a-cea35267874c\"}"
+}

@@ -18,9 +18,9 @@ Resources:
     Properties:
       StageName: Prod
       Cors:
-        AllowOrigins: '''*'''
-        AllowHeaders: '''Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token'''
         AllowMethods: '''GET, POST, PUT, DELETE, OPTIONS, PATCH'''
+        AllowHeaders: '''Content-Type,X-CSRF-TOKEN,Access-Control-Allow-Origin'''
+        AllowOrigin: '''*'''
   Todos:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -50,6 +50,22 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
+  OptionsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/options.handler
+      Runtime: python3.12
+      Events:
+        CorsOptions:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: OPTIONS
+            RestApiId:
+              Ref: MyApi
+      CodeUri: OptionsFunction
+    Metadata:
+      SamResourceId: OptionsFunction
   registerUserFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -322,4 +338,4 @@ Outputs:
   WebEndpoint:
     Description: API Gateway endpoint URL for Prod stage
     Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/
+      Fn::Sub: https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/

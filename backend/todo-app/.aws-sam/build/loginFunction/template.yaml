@@ -15,7 +15,12 @@ Globals:
         DYNAMODB_ENDPOINT_URL: "http://host.docker.internal:8000"
     Timeout: 10
     MemorySize: 128
-
+  # Api:
+  #   Cors:
+  #     AllowMethods: "'GET,POST,PUT,DELETE,PATCH,OPTIONS'"
+  #     AllowHeaders: "'Content-Type,Access-Control-Allow-Origin,Authorization,X-CSRF-TOKEN'"
+  #     AllowOrigins: "'*'"
+  #     AllowCredentials: true
 
 Resources:
   MyApi:
@@ -23,9 +28,10 @@ Resources:
     Properties:
       StageName: Prod 
       Cors:
-        AllowOrigins: "'*'"
-        AllowHeaders: "'Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token'"
         AllowMethods: "'GET, POST, PUT, DELETE, OPTIONS, PATCH'"
+        AllowHeaders: "'Content-Type,X-CSRF-TOKEN,Access-Control-Allow-Origin'"
+        AllowOrigin: "'*'"
+        # AllowCredentials: true
 
   Todos:
     Type: AWS::DynamoDB::Table
@@ -58,6 +64,19 @@ Resources:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
 
+  #CORS対策
+  OptionsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/options.handler
+      Runtime: python3.12
+      Events:
+        CorsOptions:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: OPTIONS
+            RestApiId: !Ref MyApi
 
 
   registerUserFunction:
@@ -277,4 +296,4 @@ Resources:
 Outputs:
   WebEndpoint:
     Description: "API Gateway endpoint URL for Prod stage"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+    Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
