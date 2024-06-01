@@ -45,6 +45,7 @@ export const Login = () => {
             if (response.data && response.data.userId) {
                 // RecoilのatomにユーザーIDを保存
                 setLogin(response.data.userId);
+                console.log(response.data)
                 // ログイン成功後にmainへリダイレクト
                 navigate('/main');
             } else {

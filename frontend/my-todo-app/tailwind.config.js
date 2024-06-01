@@ -23,7 +23,8 @@ export default {
         
       },
       fontFamily: {
-        'Georgia': 'Georgia'
+        'Georgia': 'Georgia',
+        'life': 'Love Ya Like Sister'
       }
     },
   },
