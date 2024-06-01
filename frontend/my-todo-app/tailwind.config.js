@@ -6,10 +6,11 @@ export default {
   theme: {
     extend: {
       screens: {
-        'lg': '1280',
+        'lg': '1540',
       },
       colors: {
         'gray': '#D9D9D9',
+        'title-gray': '#6C6C6C',
         'blue': '#1DA0D9',
         'btn_green': '#1DD9A0',
         'red': '#E20E0E',

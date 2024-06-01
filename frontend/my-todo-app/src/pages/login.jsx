@@ -56,12 +56,12 @@ export const Login = () => {
     }
 
     return (
-        <div className="flex flex-col justify-center items-center min-h-screen" style={{backgroundImage: `url('src/assets/start.jpg')`}}>
+        <div className="flex flex-col justify-center items-center min-h-screen bg-no-repeat bg-cover bg-center" style={{backgroundImage: `url('src/assets/start.jpg')`}}>
             <title>死ぬまでにやりたいことリスト</title>
             <header className='absolute top-2 right-3 m-4'>
                 <button className='bg-btn_green p-2'  onClick={(handleSignUpNavigate)}>新規登録</button>
             </header>
-            <h1 className='text-4xl mb-8 text-gray'>死ぬまでにやりたいことリスト</h1>
+            <h1 className='text-4xl mb-8 text-title-gray'>死ぬまでにやりたいことリスト</h1>
             <div className='flex flex-col mt-8 w-80 items-center space-y-16'>
                 <input 
                     type="email" 
