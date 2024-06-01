@@ -60,7 +60,7 @@ def calculate_todo_progress(todo, tasks):
         'Id': todo['SK'], 
         'Title': todo['Title'],
         'RemainingDays': remaining_days,
-        'Progress': progress_percentage
+        'Progress': int(progress_percentage)
     }
 
 
@@ -122,6 +122,9 @@ def get_user_info_handler(event, context):
             #ToDoごとの進捗と残り日数を計算
             todo_info = calculate_todo_progress(todo, tasks)
             todo_infos.append(todo_info)
+            
+        #IDに#TASKを含むタスクを除外
+        todo_infos = [todo for todo in todo_infos if '#TASK' not in todo['Id']]
         
         result = {
             'user': {

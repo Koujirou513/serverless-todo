@@ -13,16 +13,7 @@ else:
 
 table = dynamodb.Table(table_name)
 
-def create_common_headers():
-    return {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET,OPTIONS,PUT,POST,DELETE",
-        "Access-Control-Allow-Headers": "Content-Type,",
-    }
-
 def loginHandler(event, context):
-    headers = create_common_headers()
 
     if event['httpMethod'] == 'OPTIONS':
         return {
@@ -50,7 +41,6 @@ def loginHandler(event, context):
         if not items:
             return {
                 'statusCode': 404,
-                'headers': headers,
                 'body': json.dumps({'message': 'User not found'})
             }
 
@@ -58,7 +48,6 @@ def loginHandler(event, context):
         if item['Password'] != hashed_password:
             return {
                 'statusCode': 401,
-                'headers': headers,
                 'body': json.dumps({'message': 'Invalid password'})
             }
 
@@ -76,7 +65,6 @@ def loginHandler(event, context):
     except Exception as e:
         return {
             'statusCode': 500,
-            'headers': headers,
             'body': json.dumps({'message': 'Failed to fetch user data', 'error': str(e)})
         }
 

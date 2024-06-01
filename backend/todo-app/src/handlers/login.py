@@ -14,7 +14,6 @@ else:
 table = dynamodb.Table(table_name)
 
 def loginHandler(event, context):
-    headers = create_common_headers()
 
     if event['httpMethod'] == 'OPTIONS':
         return {

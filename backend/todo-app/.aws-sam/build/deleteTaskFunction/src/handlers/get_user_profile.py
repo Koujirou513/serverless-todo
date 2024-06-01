@@ -41,6 +41,11 @@ def get_user_handler(event, context):
         
         return {
             'statusCode': 200,
+            'headers': {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET,OPTIONS,PUT,POST,DELETE",
+                "Access-Control-Allow-Headers": "Content-Type,",
+            },
             'body': json.dumps({'user': item})
         }
         
