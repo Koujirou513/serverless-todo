@@ -27,6 +27,9 @@ def register_todo_handler(event, context):
         completed = body['completed']
         tasks = body['tasks']  #中間目標のリスト
         
+        # 空のタスクを除外
+        filtered_tasks = [task for task in tasks if task['title'] and task['targetDate']]
+        
         # Todoアイテムの生成
         todo_id = str(uuid.uuid4())
         todo_item = {
@@ -42,7 +45,7 @@ def register_todo_handler(event, context):
         items = [todo_item]
         
         #中間目標アイテムの生成
-        for task in tasks:
+        for task in filtered_tasks:
             task_id = str(uuid.uuid4())
             task_item = {
                 'PK': user_id,

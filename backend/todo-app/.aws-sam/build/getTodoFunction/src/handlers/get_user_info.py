@@ -92,6 +92,14 @@ def get_user_info_handler(event, context):
                 'statusCode': 400,
                 'body': json.dumps({'message': 'Birthdate and Gender are required'})
             }
+            
+        try:
+            datetime.strptime(birthdate, '%Y-%m-%d')
+        except ValueError:
+            return {
+                'statusCode': 400,
+                'body': json.dumps({'message': 'Invalid date format for Birthdate'})
+            }
         
         # 残りの人生期間を計算    
         remaining_years, remaining_days = calculate_remaining_life(birthdate, gender)
