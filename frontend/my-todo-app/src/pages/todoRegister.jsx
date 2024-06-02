@@ -25,7 +25,7 @@ export const TodoRegister = () => {
     }
 
     const handleSubmit = async () => {
-        if (!todoTitle || !todoDate || !todoBudget) {
+        if (!todoTitle || !todoDate) {
             setErrorMessage('すべての項目を入力してください')
         }
         try {

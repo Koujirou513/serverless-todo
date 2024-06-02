@@ -49,6 +49,7 @@ export const SignUp = () => {
             });
 
             if (response.data && response.data.userId) {
+                console.log(response.data)
                 setLogin(response.data.userId);
                 navigate('/main');
             } else {
