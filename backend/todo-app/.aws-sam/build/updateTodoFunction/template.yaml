@@ -15,12 +15,6 @@ Globals:
         DYNAMODB_ENDPOINT_URL: "http://host.docker.internal:8000"
     Timeout: 10
     MemorySize: 128
-  # Api:
-  #   Cors:
-  #     AllowMethods: "'GET,POST,PUT,DELETE,PATCH,OPTIONS'"
-  #     AllowHeaders: "'Content-Type,Access-Control-Allow-Origin,Authorization,X-CSRF-TOKEN'"
-  #     AllowOrigins: "'*'"
-  #     AllowCredentials: true
 
 Resources:
   MyApi:
@@ -29,9 +23,31 @@ Resources:
       StageName: Prod 
       Cors:
         AllowMethods: "'GET, POST, PUT, DELETE, OPTIONS, PATCH'"
-        AllowHeaders: "'Content-Type,X-CSRF-TOKEN,Access-Control-Allow-Origin'"
+        AllowHeaders: "'Content-Type,X-CSRF-TOKEN,Access-Control-Allow-Origin,Authorization'"
         AllowOrigin: "'*'"
-        # AllowCredentials: true
+        AllowCredentials: true
+      DefinitionBody:
+        swagger: "2.0"
+        info: 
+          title: "My API"
+          version: "1.0"
+        paths:
+          /api/{proxy+}:
+            x-amazon-apigateway-any-method:
+              produces:
+                - "application/json"
+              parameters:
+                - name: "proxy"
+                  in: "path"
+                  required: true 
+                  type: "string"
+              x-amazon-apigateway-integration:
+                uri: 
+                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MyLambda.Arn}/invocations
+                passthroughBehavior: "when_no_match"
+                httpMethod: "ANY"
+                type: "aws_proxy"
+                responses: {}
 
   Todos:
     Type: AWS::DynamoDB::Table
@@ -74,7 +90,7 @@ Resources:
         CorsOptions:
           Type: Api
           Properties:
-            Path: /{proxy+}
+            Path: /api/{proxy+}
             Method: OPTIONS
             RestApiId: !Ref MyApi
 
@@ -94,7 +110,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref MyApi
-            Path: /user/register
+            Path: /api/user/register
             Method: POST
 
 
@@ -114,7 +130,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref MyApi
-            Path: /user/info
+            Path: /api/user/info
             Method: GET
 
 
@@ -131,7 +147,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref MyApi
-            Path: /login
+            Path: /api/login
             Method: POST
 
 
@@ -147,7 +163,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref MyApi
-            Path: /todo/register
+            Path: /api/todo/register
             Method: POST
 
   getUserProfileFunction:
@@ -162,7 +178,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref MyApi
-            Path: /user/profile
+            Path: /api/user/profile
             Method: GET
 
   updateUserFunction:
@@ -180,7 +196,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref MyApi
-            Path: /user/update
+            Path: /api/user/update
             Method: PATCH
 
   deleteUserFunction:
@@ -198,7 +214,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref MyApi
-            Path: /user/delete
+            Path: /api/user/delete
             Method: DELETE
 
   getTodoFunction:
@@ -216,7 +232,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref MyApi
-            Path: /todo
+            Path: /api/todo
             Method: GET
 
   updateTodoFunction:
@@ -234,7 +250,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref MyApi
-            Path: /todo/update
+            Path: /api/todo/update
             Method: PUT 
 
   taskCompletedFunction:
@@ -252,7 +268,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref MyApi
-            Path: /todo/task/completed
+            Path: /api/todo/task/completed
             Method: PATCH
 
   deleteTodoFunction:
@@ -270,7 +286,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref MyApi
-            Path: /todo/delete
+            Path: /api/todo/delete
             Method: DELETE
 
   deleteTaskFunction:
@@ -288,7 +304,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref MyApi
-            Path: /todo/task/delete
+            Path: /api/todo/task/delete
             Method: DELETE
 
 
