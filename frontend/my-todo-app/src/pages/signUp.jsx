@@ -63,7 +63,7 @@ export const SignUp = () => {
     
 
     return (
-        <div className="flex flex-col justify-center items-center min-h-screen bg-no-repeat bg-cover" style={{backgroundImage: `url('src/assets/start.jpg')`}}>
+        <div className="flex flex-col justify-center items-center min-h-screen bg-no-repeat bg-cover" style={{backgroundImage: `url('public/start.jpg')`}}>
             <header className='absolute top-2 left-3 m-4'>
                 <button className="bg-gray p-2 w-16" onClick={handleLoginNavigate}>戻る</button>
             </header>

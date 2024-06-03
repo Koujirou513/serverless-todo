@@ -65,7 +65,7 @@ export const Profile = () => {
     // ユーザーの名前を変更する関数
     const handleSaveClick = async () => {
         try {
-            await axios.patch(`${apiEndpoint}/user/update`, {
+            await axios.patch(`${apiEndpoint}/api/user/update`, {
                 userId: loginState,
                 newName: newName,
             });
@@ -91,7 +91,7 @@ export const Profile = () => {
         const isConfirmed = window.confirm('本当に登録解除しますか？');
         if (isConfirmed) {
             try {
-                await axios.delete(`${apiEndpoint}/user/delete`, {
+                await axios.delete(`${apiEndpoint}/api/user/delete`, {
                     data: {
                         userId: loginState,
                     },
