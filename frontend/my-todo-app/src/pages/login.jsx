@@ -32,7 +32,7 @@ export const Login = () => {
         }
 
         try {
-            const response = await axios.post(`${apiEndpoint}/login`,{
+            const response = await axios.post(`${apiEndpoint}/api/login`,{
                 email,
                 password
             }, {

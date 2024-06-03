@@ -14,7 +14,7 @@ export const Main = () => {
         const fetchUserInfo = async () => {
             try {
                 console.log('userId:', loginState);
-                const response = await axios.get(`${apiEndpoint}/user/info`, {
+                const response = await axios.get(`${apiEndpoint}/api/user/info`, {
                     params: {
                         userId: loginState,
                     },

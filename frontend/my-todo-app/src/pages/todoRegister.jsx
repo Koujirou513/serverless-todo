@@ -42,7 +42,7 @@ export const TodoRegister = () => {
                 }))
             };
             console.log(todoData)
-            await axios.post(`${apiEndpoint}/todo/register`,
+            await axios.post(`${apiEndpoint}/api/todo/register`,
                 todoData,
                 {
                 headers: {

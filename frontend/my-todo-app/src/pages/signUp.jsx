@@ -36,7 +36,7 @@ export const SignUp = () => {
         }
         
         try {
-            const response = await axios.post(`${apiEndpoint}/user/register`, {
+            const response = await axios.post(`${apiEndpoint}/api/user/register`, {
                 name,
                 email,
                 birthdate,

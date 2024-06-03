@@ -17,7 +17,7 @@ export const Profile = () => {
         const fetchUserProfile = async () => {
             try {
                 console.log('userId:', loginState);
-                const response = await axios.get(`${apiEndpoint}/user/profile`, {
+                const response = await axios.get(`${apiEndpoint}/api/user/profile`, {
                     params: {
                         userId: loginState,
                     },
