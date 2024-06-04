@@ -88,7 +88,7 @@ def update_todo_handler(event, context):
             'statusCode': 200,
             'headers': {
                 "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "GET,OPTIONS,PUT,POST,DELETE",
+                "Access-Control-Allow-Methods": "GET,OPTIONS,PUT,POST,DELETE,PATCH",
                 "Access-Control-Allow-Headers": "Content-Type,",
             },
             'body': json.dumps({'message': 'ToDo and tasks updated successfully'}, cls=DecimalEncoder)

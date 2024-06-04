@@ -21,29 +21,7 @@ Resources:
         AllowMethods: '''GET, POST, PUT, DELETE, OPTIONS, PATCH'''
         AllowHeaders: '''Content-Type,X-CSRF-TOKEN,Access-Control-Allow-Origin,Authorization'''
         AllowOrigin: '''*'''
-        AllowCredentials: true
-      DefinitionBody:
-        swagger: '2.0'
-        info:
-          title: My API
-          version: '1.0'
-        paths:
-          /api/{proxy+}:
-            x-amazon-apigateway-any-method:
-              produces:
-              - application/json
-              parameters:
-              - name: proxy
-                in: path
-                required: true
-                type: string
-              x-amazon-apigateway-integration:
-                uri:
-                  Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${MyLambda.Arn}/invocations
-                passthroughBehavior: when_no_match
-                httpMethod: ANY
-                type: aws_proxy
-                responses: {}
+        AllowCredentials: false
   Todos:
     Type: AWS::DynamoDB::Table
     Properties:
