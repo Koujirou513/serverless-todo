@@ -52,7 +52,7 @@ export const Main = () => {
     }
 
     return (
-        <div className="flex flex-col items-center min-h-screen bg-cover" style={{backgroundImage: `url('public/items.png')`}}>
+        <div className="flex flex-col items-center min-h-screen bg-cover" style={{ backgroundImage: `url('/items.png')` }}>
             <header className="flex justify-between w-full">
                 <button className="h-10 m-4 p-2 bg-gray" onClick={handleLogout}>ログアウト</button>
                 <div className="flex flex-col">

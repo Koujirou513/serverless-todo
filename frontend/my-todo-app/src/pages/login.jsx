@@ -57,7 +57,7 @@ export const Login = () => {
     }
 
     return (
-        <div className="flex flex-col justify-center items-center min-h-screen bg-no-repeat bg-cover bg-center" style={{backgroundImage: `url('public/start.jpg')`}}>
+        <div className="flex flex-col justify-center items-center min-h-screen bg-no-repeat bg-cover bg-center" style={{ backgroundImage: `url('/start.jpg')` }}>
             <title>死ぬまでにやりたいことリスト</title>
             <header className='absolute top-2 right-3 m-4'>
                 <button className='bg-btn_green p-2'  onClick={(handleSignUpNavigate)}>新規登録</button>
