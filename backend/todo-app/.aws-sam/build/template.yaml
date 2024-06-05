@@ -9,7 +9,6 @@ Globals:
       Variables:
         TABLE_NAME:
           Ref: Todos
-        DYNAMODB_ENDPOINT_URL: http://host.docker.internal:8000
     Timeout: 10
     MemorySize: 128
 Resources:

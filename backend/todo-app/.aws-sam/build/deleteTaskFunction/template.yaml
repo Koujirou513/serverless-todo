@@ -1,4 +1,3 @@
-
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   todo-app
@@ -12,7 +11,7 @@ Globals:
     Environment:
       Variables:
         TABLE_NAME: !Ref Todos
-        DYNAMODB_ENDPOINT_URL: "http://host.docker.internal:8000"
+        # DYNAMODB_ENDPOINT_URL: "http://host.docker.internal:8000"
     Timeout: 10
     MemorySize: 128
 
@@ -20,7 +19,7 @@ Resources:
   MyApi:
     Type: AWS::Serverless::Api
     Properties:
-      StageName: Prod 
+      StageName: Prod
       Cors:
         AllowMethods: "'GET, POST, PUT, DELETE, OPTIONS, PATCH'"
         AllowHeaders: "'Content-Type,X-CSRF-TOKEN,Access-Control-Allow-Origin,Authorization'"
